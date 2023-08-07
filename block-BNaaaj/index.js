@@ -46,6 +46,6 @@ console.log("first");
 
 setTimeout(() => {
   console.log("second");
-}, 2000);  // api used and call stack is not blocked 
+}, 2000); // api used and call stack is not blocked
 
 console.log("third");
