@@ -5,6 +5,19 @@ fs.readFile("./content.md", (err, content) => {
   console.log(err, content);
 });
 
+//or we can directly specify function while compiling
+
+let { readFile, readFileSync } = require("fs");
+
+readFile("./content.md", "utf8", (err, content) => {
+  // handle error or content of the file
+  console.log(err, content);
+});
+readFile();
+
+var result = readFileSync("./content.md", "utf8");
+console.log(result);
+
 // synchronous code
 
 console.log("first");
