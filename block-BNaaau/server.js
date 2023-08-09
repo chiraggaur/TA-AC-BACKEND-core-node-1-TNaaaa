@@ -8,7 +8,7 @@
 
 //doubt in https server creation
 
-// let https = require("https");
+// let http = require("http");
 
 // let server = https.createServer(handleRequest);
 
@@ -29,7 +29,7 @@
 // let server = http.createServer(handleRequest); // server created
 
 // function handleRequest(req, res) {
-//   console.log(req.method, res.end("My first server in NodeJS"));
+//res.end("My first server in NodeJS");
 // } // server have request response parameters;
 
 // server.listen(5100, "localhost", () => {
@@ -41,7 +41,18 @@
 //   - console request headers
 //   - respond with content of user-agent from request headers.
 
-// doubt
+// let http = require("http"); // initialized http module
+
+// let server = http.createServer(handleRequest); // server created
+
+// function handleRequest(req, res) {
+//   console.log(req.headers);
+//   res.end(req.headers["user-agent"]);
+// } // server have request response parameters;
+
+// server.listen(5100, "localhost", () => {
+//   console.log("server is live"); // login in terminal if it is successfully created
+// });
 
 // Q. write code to create a node server
 //   - add listener on port 5566
@@ -71,14 +82,11 @@
 // let server = http.createServer(handleRequest);
 
 // function handleRequest(req, res) {
-//   //   let url = req.url;
-//   let header = req.getHeader; // doubt IN RES HEADER GET
-//   console.log(header);
-//   res.end(`${header}`);
+//   res.end(JSON.stringify(req.headers)); // in order to pass object either user stringify or string
 // }
 
 // server.listen(7000, "localhost", () => {
-//   console.log("server is live ");
+//   console.log("server listening on port 7000");
 // });
 
 // Q. create a server
@@ -134,14 +142,11 @@
 //   - send json response({success: true, message: 'Welcome to Nodejs'})
 
 // let http = require("http");
-// let url = require("url");
 // let server = http.createServer(handleRequest);
 
 // function handleRequest(req, res) {
-//   let parsedurl = url.Parse(req.url); // doubt
-//   console.log(parsedurl);
-//   res.writeHead(202, { "content-Type": "text/html" });
-//   res.end("{success: true, message: 'Welcome to Nodejs'}");
+//   res.writeHead(202, { "content-Type": "application/json" });
+//   res.end(JSON.stringify({ success: true, message: "Welcome to Nodejs" }));
 // }
 
 // server.listen(8888, "localhost", () => {
@@ -174,30 +179,50 @@
 //   - handle GET request on '/about' route and return your name in h2 as HTML page.
 //   - add a error handler at last to handle request made on other than above routes with a status code of 404.
 
-let http = require("http");
-let url = require("url");
-let server = http.createServer(handleRequest);
+// let http = require("http");
+// let server = http.createServer(handleRequest);
 
-function handleRequest(req, res) {
-  if (req.method === "GET" && req.url === "/") {
-    res.writeHead(204, { "content-Type": "text" });
-    res.end("My Name ");
-  } else if (req.method === "GET" && req.url === "/about") {
-    res.writeHead(204, { "content-Type": "text/html" });
-    res.end("<h2> My Name </h2> ");
-  } else {
-    res.writeHead(404, { "content-Type": "text" });
-    res.end(" error  occured ");
-  }
-}
+// function handleRequest(req, res) {
+//   if (req.method === "GET" && req.url === "/") {
+//     res.setHeader("content-Type", "text/plain");
+//     res.end("My Name ");
+//   } else if ((req.method = "GET" && req.url === "/about")) {
+//     res.setHeader("content-Type", "text/html");
+//     res.end("<h2> i AM hEADER </h2>");
+//   } else {
+// res.statusCode = 404;
+//     res.end(" PAGE NOT FOUND ");
+//   }
+// }
 
-server.listen(2345, "localhost", () => {
-  console.log("server is live ");
-});
+// server.listen(2345, "localhost", () => {
+//   console.log("server is live ");
+// });
 
 // Q. Handle 2 requests on same route with different method
 //     1. GET on '/users' route where return a simple HTML form with name and email field
 //     2. POST on '/users' route with a message 'Posted for the second time'.
+
+// let http = require("http");
+// let fs = require("fs");
+// let server = http.createServer(handleRequest);
+
+// function handleRequest(req, res) {
+//   if (req.method === "GET" && req.url === "/users") {
+//     res.setHeader("content-Type", "text/html");
+//     fs.createReadStream("./form.html").pipe(res);
+//   } else if ((req.method = "POST" && req.url === "/users")) {
+//     res.setHeader("content-Type", "text/html");
+//     res.end("Posted for the second time");
+//   } else {
+//     res.statusCode = 404;
+//     res.end(" PAGE NOT FOUND ");
+//   }
+// }
+
+// server.listen(2345, "localhost", () => {
+//   console.log("server is live ");
+// });
 
 // Q. create a server and handle query params from the request on following url i.e. `/users?email=nodeserver@gmail.com` from browser
 
@@ -207,3 +232,20 @@ server.listen(2345, "localhost", () => {
 //   - differentiate between `req.url` and `parsedUrl.pathname`
 //   - grab the email from query params
 //   - return json response with email from query params
+
+let http = require("http");
+let fs = require("fs");
+let url = require("url");
+let server = http.createServer(handleRequest);
+
+function handleRequest(req, res) {
+  let parsedUrl = url.parse(req.url, true);
+  //   console.log(parsedUrl.pathname); only path will be logged
+  //   console.log(parsedUrl, req.url); // req url will log whole url including query string
+  //   console.log(parsedUrl.query);
+  res.end(JSON.stringify(parsedUrl.query));
+}
+
+server.listen(2345, "localhost", () => {
+  console.log("server is live ");
+});
